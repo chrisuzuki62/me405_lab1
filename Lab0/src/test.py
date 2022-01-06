@@ -1,5 +1,5 @@
 """!
-@file the_answer.py
+@file test.py
 This file contains code which computes the answer to the question of 
 Life, the Universe, and Everything. Hopefully it can be done in fewer
 than 100,000 years.
