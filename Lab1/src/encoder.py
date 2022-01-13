@@ -8,7 +8,6 @@
              A set poistion method that sets the position of the encoder to a specifed
              value. And a get delta function that returns the change in position of the
              encoder over time.
-    @author Cade Liberty
     @author Chris Suzuki
     @date 10/21/21
 '''
@@ -25,7 +24,7 @@ class encoder:
                  position of the encoder over time.
     '''
 
-    def __init__(self, pinA, pinB, tim_num):
+    def __init__(self, enc_num):
         
         ''' @brief Constructs an encoder object
             @details Instantiates an encoder object that contains 4 different
@@ -42,28 +41,45 @@ class encoder:
         self.period = 65535
         
         ## Defines the timer that the encoder will use
-        self.timX = pyb.Timer(tim_num, prescaler = 0, period = self.period)
+        if enc_num == 1:
+            self.timer = pyb.Timer(3, prescaler = 0, period = self.period)
         
-        ## Sets one channel that the encoder will use to track time
-        self.tXch1 = self.timX.channel(1,pyb.Timer.ENC_AB, pin=pinA)
+            self.Pin1 = pyb.Pin(pyb.Pin.cpu.B6)
+            self.Pin2 = pyb.Pin(pyb.Pin.cpu.B7)
         
-        ## Sets one channel that the encoder will use to track time
-        self.tXch2 = self.timX.channel(2,pyb.Timer.ENC_AB, pin=pinB)
+            ## Sets one channel that the encoder will use to track time
+            self.ch1 = self.timer.channel(1,pyb.Timer.ENC_AB, pin=self.Pin1)
+        
+            ## Sets one channel that the encoder will use to track time
+            self.ch2 = self.timer.channel(2,pyb.Timer.ENC_AB, pin=self.Pin2)
 
+        elif enc_num == 2:
+            self.timer = pyb.Timer(5, prescaler = 0, period = self.period)
+            
+            self.Pin1 = pyb.Pin(pyb.Pin.cpu.C6)
+            self.Pin2 = pyb.Pin(pyb.Pin.cpu.C7)
+            
+            ## Sets one channel that the encoder will use to track time
+            self.ch1 = self.timer.channel(1,pyb.Timer.ENC_AB, pin=self.Pin1)
+        
+            ## Sets one channel that the encoder will use to track time
+            self.ch2 = self.timer.channel(2,pyb.Timer.ENC_AB, pin=self.Pin2)
+            
+            
         ## sets the a reference to the amount of ticks that the encoder has recorded
         self.ref_count = 0
         
         ## Sets the inital position of the encoder to 0
         self.current_pos = 0
 
-    def update(self):
+    def read(self):
         ''' @brief Updates encoder position and delta
             @details Creates an update method that when ran will update the position
                      and the delta of the specfied encoder
             @return returns the position and delta of the encoder
         '''
         ## Defines the position of the encoder as the the timer linked to the encoder
-        self.encoder_1 = self.timX.counter()
+        self.encoder_1 = self.timer.counter()
         
         ## defines the delta as the difference between the encoder reading and the
         #  reference count
@@ -77,18 +93,9 @@ class encoder:
         self.ref_count = self.encoder_1
         self.current_pos += self.delta
         
-        return self.current_pos, self.delta
-
-
-    def get_position(self):
-        ''' @brief Returns encoder position
-            @details Creates a method that when called returns the position of 
-                     the encoder shaft.
-            @return The position of the encoder shaft
-        '''
         return self.current_pos
     
-    def set_position(self, position):
+    def zero(self, position):
         ''' @brief Sets encoder position
             @details Creates a method that when called sets the position of the
                      encoder to a specified input value to the code.
@@ -96,13 +103,9 @@ class encoder:
         '''
         self.current_pos = position
 
-    def get_delta(self):
-        ''' @brief Returns encoder delta
-            @details Creates a method that when called returns the change in
-                     position of the encoder shafter between the two most recent
-                     updates
-            @return The change in position of the encoder shaft
-                    between the two most recent updates
-        '''
-        return self.delta
 
+if __name__ == '__main__':
+    while(True):
+        encoder1 = encoder.encoder(1)
+        encoder1.read()
+        
