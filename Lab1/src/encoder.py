@@ -12,8 +12,9 @@
     @date 10/21/21
 '''
 import pyb
+import time
 
-class encoder:
+class Encoder:
     ''' @brief Interface with quadrature encoders
         @details Creates a class that can be called into other python files that
                  is used to interface and read out the position of an encoder.
@@ -42,7 +43,7 @@ class encoder:
         
         ## Defines the timer that the encoder will use
         if enc_num == 1:
-            self.timer = pyb.Timer(3, prescaler = 0, period = self.period)
+            self.timer = pyb.Timer(4, prescaler = 0, period = self.period)
         
             self.Pin1 = pyb.Pin(pyb.Pin.cpu.B6)
             self.Pin2 = pyb.Pin(pyb.Pin.cpu.B7)
@@ -54,7 +55,7 @@ class encoder:
             self.ch2 = self.timer.channel(2,pyb.Timer.ENC_AB, pin=self.Pin2)
 
         elif enc_num == 2:
-            self.timer = pyb.Timer(5, prescaler = 0, period = self.period)
+            self.timer = pyb.Timer(8, prescaler = 0, period = self.period)
             
             self.Pin1 = pyb.Pin(pyb.Pin.cpu.C6)
             self.Pin2 = pyb.Pin(pyb.Pin.cpu.C7)
@@ -65,11 +66,10 @@ class encoder:
             ## Sets one channel that the encoder will use to track time
             self.ch2 = self.timer.channel(2,pyb.Timer.ENC_AB, pin=self.Pin2)
             
-            
-        ## sets the a reference to the amount of ticks that the encoder has recorded
-        self.ref_count = 0
+        self.pos_1 = self.timer.counter()
         
-        ## Sets the inital position of the encoder to 0
+        self.pos_2 = self.timer.counter()
+        
         self.current_pos = 0
 
     def read(self):
@@ -79,33 +79,36 @@ class encoder:
             @return returns the position and delta of the encoder
         '''
         ## Defines the position of the encoder as the the timer linked to the encoder
-        self.encoder_1 = self.timer.counter()
+        self.pos_1 = self.pos_2
+        self.pos_2 = self.timer.counter()
+        
         
         ## defines the delta as the difference between the encoder reading and the
         #  reference count
-        self.delta = self.encoder_1 - self.ref_count
+        self.delta = self.pos_2 - self.pos_1
         
         if self.delta > 0 and self.delta > self.period/2:
             self.delta -= self.period
         if self.delta < 0 and abs(self.delta) > self.period/2:
             self.delta += self.period
-         
-        self.ref_count = self.encoder_1
+        
         self.current_pos += self.delta
         
         return self.current_pos
     
-    def zero(self, position):
+    def zero(self):
         ''' @brief Sets encoder position
             @details Creates a method that when called sets the position of the
                      encoder to a specified input value to the code.
             @param position The new position of the encoder shaft
         '''
-        self.current_pos = position
+        self.current_pos = 0
 
 
 if __name__ == '__main__':
+    encoder1 = Encoder(1)
+    encoder2 = Encoder(2)
     while(True):
-        encoder1 = encoder.encoder(1)
-        encoder1.read()
+        time.sleep(0.1)
+        print([encoder1.read(), encoder2.read()])
         
