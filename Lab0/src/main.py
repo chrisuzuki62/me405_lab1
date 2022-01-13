@@ -16,6 +16,9 @@ import utime
 def led_setup():
     """!
     @brief   Sets up the LED and timer
+    @details This method initiates pins on the nucleo board PA0
+             as and LED output and assigns the frequency and timer
+             channel for it.
     """
     pA0 = pyb.Pin(pyb.Pin.board.PA0, pyb.Pin.OUT_PP)
     tim2 = pyb.Timer(2, freq = 20000)
@@ -25,6 +28,9 @@ def led_setup():
 def led_brightness(x):
     """!
     @brief   Sets brightness of the LED and limits value
+    @details This method takes in a value for brightness
+             and changes the brightness of the LED based
+             on the value.
     @param   x Sets the percent brightness of the LED
     """
     if x>100:
@@ -49,8 +55,3 @@ if __name__ == "__main__":
             break
     
 print('Program Terminated')
-    
-        
-            
-    
-    

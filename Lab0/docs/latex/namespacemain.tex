@@ -1,0 +1,60 @@
+\hypertarget{namespacemain}{}\doxysection{main Namespace Reference}
+\label{namespacemain}\index{main@{main}}
+
+
+~\newline
+  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacemain_a6ef5ac3570ce2c3589413b978e830e1d}{led\+\_\+setup}} ()
+\begin{DoxyCompactList}\small\item\em Sets up the LED and timer. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacemain_a2d7970668187bfad392eb768713be06a}{led\+\_\+brightness}} (x)
+\begin{DoxyCompactList}\small\item\em Sets brightness of the LED and limits value. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacemain_a7806b4f82eaafc4d32a8368348e65a4d}\label{namespacemain_a7806b4f82eaafc4d32a8368348e65a4d}} 
+int {\bfseries start\+Time} = 0
+\item 
+\mbox{\Hypertarget{namespacemain_af9965030521b30d86bfb039a0e92a253}\label{namespacemain_af9965030521b30d86bfb039a0e92a253}} 
+int {\bfseries relative\+Time} = 0
+\item 
+\mbox{\Hypertarget{namespacemain_ac1997d7d8e0e4481fc058f08b8e113ca}\label{namespacemain_ac1997d7d8e0e4481fc058f08b8e113ca}} 
+int {\bfseries current\+Time} = 0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+~\newline
+ 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacemain_a2d7970668187bfad392eb768713be06a}\label{namespacemain_a2d7970668187bfad392eb768713be06a}} 
+\index{main@{main}!led\_brightness@{led\_brightness}}
+\index{led\_brightness@{led\_brightness}!main@{main}}
+\doxysubsubsection{\texorpdfstring{led\_brightness()}{led\_brightness()}}
+{\footnotesize\ttfamily def main.\+led\+\_\+brightness (\begin{DoxyParamCaption}\item[{}]{x }\end{DoxyParamCaption})}
+
+
+
+Sets brightness of the LED and limits value. 
+
+This method takes in a value for brightness and changes the brightness of the LED based on the value. 
+\begin{DoxyParams}{Parameters}
+{\em x} & Sets the percent brightness of the LED \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacemain_a6ef5ac3570ce2c3589413b978e830e1d}\label{namespacemain_a6ef5ac3570ce2c3589413b978e830e1d}} 
+\index{main@{main}!led\_setup@{led\_setup}}
+\index{led\_setup@{led\_setup}!main@{main}}
+\doxysubsubsection{\texorpdfstring{led\_setup()}{led\_setup()}}
+{\footnotesize\ttfamily def main.\+led\+\_\+setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Sets up the LED and timer. 
+
+This method initiates pins on the nucleo board PA0 as and LED output and assigns the frequency and timer channel for it. 
