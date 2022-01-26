@@ -1,15 +1,15 @@
-'''! @file encoder.py
+'''!@file encoder.py
     @brief A driver for reading from Quadrature Encoders
-    @details This file creates an encoder calss that contains 5 methods that can
+    @details This file creates an encoder calss that contains 3 methods that can
              be used in other files to get the change of the position of an
              encoder over time. It contains a construcotr method to instantiate each
-             class object. An update method to update the position that the encoder
-             reads. A  get position method that returns the position of the encoder. 
-             A set poistion method that sets the position of the encoder to a specifed
-             value. And a get delta function that returns the change in position of the
-             encoder over time.
+             class object. A  get position method that returns the position of the encoder. 
+             A zero poistion method that zeroes the position of the encoder to a specifed
+             value. 
+    @author Damond Li
+    @author Chris Or
     @author Chris Suzuki
-    @date 10/21/21
+    @date 1/25/22
 '''
 import pyb
 import time
@@ -26,18 +26,18 @@ class Encoder:
     def __init__(self, enc_num):
         
         ''' @brief Constructs an encoder object
-            @details Instantiates an encoder object that contains 4 different
-                     methods that can be used in other python files. this also
+            @details Instantiates an encoder object that contains 2 different
+                     methods that can be used in other python files. This also
                      generally sets up the use of any encoder so multiple can 
                      be called in any file.
             @param enc_num
         '''
         ## Sets the maximum amount of ticks that the encoder can record. This
-        #  is exactly the same as the maximum amount of bytes that the encoder
-        #  can track since it is an 8 bit encoder.
+        ## is exactly the same as the maximum amount of bytes that the encoder
+        ## can track since it is an 8 bit encoder.
         self.period = 65535
         
-        ## Defines the timer that the encoder will use
+        ## Defines the two encoders that will be used and seperates usage
         if enc_num == 1:
             self.timer = pyb.Timer(4, prescaler = 0, period = self.period)
         
@@ -47,7 +47,7 @@ class Encoder:
             ## Sets one channel that the encoder will use to track time
             self.ch1 = self.timer.channel(1,pyb.Timer.ENC_AB, pin=self.Pin1)
         
-            ## Sets one channel that the encoder will use to track time
+            ## Sets the second channel that the encoder will use to track time
             self.ch2 = self.timer.channel(2,pyb.Timer.ENC_AB, pin=self.Pin2)
 
         elif enc_num == 2:
@@ -62,6 +62,7 @@ class Encoder:
             ## Sets one channel that the encoder will use to track time
             self.ch2 = self.timer.channel(2,pyb.Timer.ENC_AB, pin=self.Pin2)
             
+        ## variables that record the ticks of encoder
         self.pos_1 = self.timer.counter()
         
         self.pos_2 = self.timer.counter()
@@ -69,10 +70,10 @@ class Encoder:
         self.current_pos = 0
 
     def read(self):
-        ''' @brief Updates encoder position and delta
+        ''' @brief Updates encoder position 
             @details Creates an update method that when ran will update the position
-                     and the delta of the specfied encoder
-            @return returns the position and delta of the encoder
+                     of the specfied encoder
+            @return returns the position of the encoder
         '''
         ## Defines the position of the encoder as the the timer linked to the encoder
         self.pos_1 = self.pos_2
@@ -80,7 +81,7 @@ class Encoder:
         
         
         ## defines the delta as the difference between the encoder reading and the
-        #  reference count
+        ## last recorded position of the encoder
         self.delta = self.pos_2 - self.pos_1
         
         if self.delta > 0 and self.delta > self.period/2:
@@ -93,14 +94,14 @@ class Encoder:
         return self.current_pos
     
     def zero(self):
-        ''' @brief Sets encoder position
+        ''' @brief Zeros encoder position
             @details Creates a method that when called sets the position of the
-                     encoder to a specified input value to the code.
-            @param position The new position of the encoder shaft
+                     encoder to zero.
         '''
         self.current_pos = 0
 
 
+## main testing encoder code
 if __name__ == '__main__':
     encoder1 = Encoder(1)
     encoder2 = Encoder(2)
