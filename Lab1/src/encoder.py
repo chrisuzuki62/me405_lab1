@@ -18,11 +18,9 @@ class Encoder:
     ''' @brief Interface with quadrature encoders
         @details Creates a class that can be called into other python files that
                  is used to interface and read out the position of an encoder.
-                 The class contains 5 methods. One to construct an encoder object,
-                 one to update the position that the encoder reads, one to get the
-                 position that the encoder reads, one to set the position of the
-                 encoder to a specified value, and one to return the change of
-                 position of the encoder over time.
+                 The class contains 3 methods. One to construct an encoder object,
+                 one to get the position that the encoder reads, and one to set the 
+                 position of the encoder to a specified value.
     '''
 
     def __init__(self, enc_num):
@@ -32,9 +30,7 @@ class Encoder:
                      methods that can be used in other python files. this also
                      generally sets up the use of any encoder so multiple can 
                      be called in any file.
-            @ param PinA Inputs a pin letter and number
-            @ param PinA Inputs a pin letter and number
-            @ param tim_num Inputs the number of the timer that will be used
+            @param enc_num
         '''
         ## Sets the maximum amount of ticks that the encoder can record. This
         #  is exactly the same as the maximum amount of bytes that the encoder
