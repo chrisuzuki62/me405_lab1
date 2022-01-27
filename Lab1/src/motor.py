@@ -30,9 +30,9 @@ class Motor:
                     turning the motor off initially for safety. This also sets 
                     up the pin objects for motors 1 and 2 for use in other 
                     files.
-        @param enable_pin Enable pin sets the pin corresponding to each motor 
-                          to be set to the output mode. (There will be several 
-                          of these)
+        @param motor_num An integer to describe each instance of the Motor object.
+                        There are a unique set of pins for each instance of the Motor.
+                        Currently, the driver supports up to two motors.
         '''
         print ('Creating a motor driver')
         if motor_num == 1:
@@ -66,14 +66,14 @@ class Motor:
     def enable(self):
         """! 
         @brief      Enables motor 
-        @details    This method enables the motor by setting the pin to high
+        @details    This method enables the motor by setting the enable pin to high
         """
         self.enable_pin.high()
         
     def disable(self):
         """!
         @brief      Enables motor 
-        @details    This method disables the motor by setting the pin to low
+        @details    This method disables the motor by setting the enable pin to low
         """
         self.enable_pin.low()
 
